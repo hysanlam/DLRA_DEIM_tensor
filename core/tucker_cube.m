@@ -1,13 +1,5 @@
 function X3 = tucker_cube(X)
-%TUCKER_CUBE_FAST  One-shot X.^3 in Tucker form (no r^2 intermediate).
-%
-%   X3 = tucker_cube_fast( X )
-%   Same input/output as tucker_cube, but builds the cube directly:
-%     • each factor gets every triple column-wise product of the
-%       original factor (→ size n_n × r^3)
-%     • core is triple Kronecker of vec(G) then reshaped/perm’d
-%
-%   Useful when r is modest but r^2 would already be large.
+
 %
 G  = X.core;     U = X.U;
 r1 = size(G,1);  r2 = size(G,2);  r3 = size(G,3);

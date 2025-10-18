@@ -111,82 +111,8 @@ P=add_tucker_tensors(P1,P2,[1 2 3]);
 
 end
 
-function [ p ] = gpode( U, np )
-[~,~,p] = qr(U', 'vector'); % qdeim
-p = p(1:size(U,2));         % take points equal to number of basis
-for i=length(p)+1:np
-    [~, S, W] = svd(U(p, :), 0);
-    g = S(end-1, end-1)^2 - S(end, end)^2;
-    Ub = W'*U';
-    r = g + sum(Ub.^2, 1);
-    r = r-sqrt((g+sum(Ub.^2,1)).^2-4*g*Ub(end, :).^2);
-    [~, I] = sort(r, 'descend');
-    e = 1;
-    while any(I(e) == p)
-        e = e + 1;
-    end
-    p(end + 1) = I(e);
-end
-p = sort(p);
-end
 
 
-function result = accessMode1Columns(getA, p1, p2, I, I1)
 
 
-L1 = length(p1);    % New mode-2 dimension in B
-numCols = numel(I); % Number of columns to extract
 
-% Preallocate the result matrix with size [I1 x numCols]
-result = zeros(I1, numCols);
-
-% Loop over each desired column index in I
-for colIdx = 1:numCols
-    c = I(colIdx);
-    % Recover j and k from the column index c using the unfolding mapping:
-    j = mod(c - 1, L1) + 1;
-    k = floor((c - 1) / L1) + 1;
-
-    % For each row i in the first mode, fill in the value:
-
-    result(1:I1, colIdx) = getA(1:I1, p1(j), p2(k));
-
-end
-end
-
-function result = accessMode2Columns(getA, p1, p3, I,I2)
-
-L1 = length(p1);       % Number of rows in B corresponding to the first mode
-numCols = numel(I);    % Number of columns to extract
-result = zeros(I2, numCols); % Preallocate result matrix
-
-% Loop over each desired column index in I.
-for idx = 1:numCols
-    c = I(idx);
-    % Recover i and k from the unfolding mapping:
-    i = mod(c-1, L1) + 1;
-    k = floor((c-1)/L1) + 1;
-
-    % Instead of constructing the full subtensor B, we directly extract the
-    % vector from the second mode for the appropriate first and third mode indices.
-    result(:, idx) = getA(p1(i), 1:I2, p3(k));
-end
-end
-
-function result = accessMode3Columns(getA, p1, p2, I,I3)
-
-L1 = length(p1);   % New first-mode dimension in B
-L2 = length(p2);   % New second-mode dimension in B
-numCols = numel(I);
-
-% Preallocate the result matrix F of size [n x numCols]
-result = zeros(I3, numCols);
-
-for idx = 1:numCols
-    c = I(idx);
-    % Recover indices in p1 and p2 from the unfolding mapping:
-    i1 = mod(c-1, L1) + 1;
-    i2 = floor((c-1)/L1) + 1;
-    result(:, idx) = getA(p1(i1), p2(i2), 1:I3);
-end
-end

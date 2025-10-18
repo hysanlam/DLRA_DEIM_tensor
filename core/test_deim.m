@@ -14,8 +14,9 @@ tic
 % norm(full(projected_F(projected_F(X,@F_eval),@F_eval))-projected_F(X,@F_eval))
 % norm (full(projected_F(X,@F_eval))-full(projected_F_deim(projected_F(X,@F_eval),@F_eval_entries,@F_eval)))
  tic;
- norm(full(projected_F_deim(X,@F_eval_entries,@F_eval,"ARP"))-F)
+ norm(full(projected_F_deim(X,@F_eval_entries,@F_eval,"QDEIM"))-F)
  toc
+
  
 % norm(full(projected_F_deim(projected_F_deim(X,@F_eval_entries,@F_eval),@F_eval_entries,@F_eval))-projected_F_deim(X,@F_eval_entries,@F_eval))
 

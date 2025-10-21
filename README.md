@@ -1,1 +1,1 @@
-This is a software library that reproduces numerical experiments from the manuscript. We used the Tensor Toolbox for the computation.
+This is a software library that reproduces numerical experiments from the manuscript by Benjamin Carrel, Daniel Kressner, Hei Yin Lam and Bart Vandereycken titled 'Interpolatory Dynamical Low-Rank Approximation: Theoretical Foundations and Algorithms'. We used the Tensor Toolbox for the computation.
